@@ -1,1 +1,2 @@
-// Shopping Cart Feature exports
+export * from './CartItem';
+export * from './CartSummary';
