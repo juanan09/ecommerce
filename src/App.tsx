@@ -1,52 +1,27 @@
-import { CartProvider } from './context/CartContext';
-import { ProductCatalog } from './features/product-catalog/ProductCatalog';
-import { ShoppingCart } from './features/shopping-cart/ShoppingCart';
-import { Toast } from './shared/components/Toast';
-import { useState } from 'react';
+import { ProductCard } from './features/product-catalog/components/ProductCard';
 
 function App() {
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
+  const mockProduct = {
+    id: '1',
+    name: 'Wireless Noise-Canceling Headphones',
+    price: 299.99,
+    image: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=1000&auto=format&fit=crop'
+  };
+
+  const handleAddToCart = (product: typeof mockProduct) => {
+    console.log('Added to cart:', product);
+  };
 
   return (
-    <CartProvider>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-        <header className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-10">
-          <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div className="flex items-center space-x-2">
-              <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                ShopSimple
-              </span>
-            </div>
-            <nav className="hidden md:block">
-              <ul className="flex space-x-6 text-gray-600 dark:text-gray-300">
-                <li className="hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer">Products</li>
-                <li className="hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer">Cart</li>
-              </ul>
-            </nav>
-          </div>
-        </header>
-
-        <main className="pb-20">
-          <ProductCatalog />
-          <div className="my-12 border-t border-gray-200 dark:border-gray-700 mx-4"></div>
-          <ShoppingCart />
-        </main>
-
-        <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 py-8">
-          <div className="container mx-auto px-4 text-center text-gray-500 dark:text-gray-400">
-            <p>&copy; {new Date().getFullYear()} ShopSimple. All rights reserved.</p>
-          </div>
-        </footer>
-
-        {toast && (
-          <Toast
-            message={toast.message}
-            type={toast.type}
-            onClose={() => setToast(null)}
-          />
-        )}
+    <div className="container mx-auto p-8 flex flex-col items-center justify-center min-h-[50vh]">
+      <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">Featured Product</h1>
+      <div className="w-full max-w-sm">
+        <ProductCard
+          product={mockProduct}
+          onAddToCart={handleAddToCart}
+        />
       </div>
-    </CartProvider>
+    </div>
   );
 }
 
