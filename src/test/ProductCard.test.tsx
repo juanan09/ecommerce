@@ -8,6 +8,7 @@ describe('ProductCard', () => {
         name: 'Awesome Product',
         price: 129.99,
         image: 'https://example.com/product.jpg',
+        description: 'This is an awesome product description that is long enough to be truncated in the UI view.',
     };
 
     it('renders product information correctly', () => {

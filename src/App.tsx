@@ -1,26 +1,22 @@
-import { ProductCard } from './features/product-catalog/components/ProductCard';
+import { ProductCatalog } from './features/product-catalog/components/ProductCatalog';
+import type { Product } from './shared/types';
 
 function App() {
-  const mockProduct = {
-    id: '1',
-    name: 'Wireless Noise-Canceling Headphones',
-    price: 299.99,
-    image: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=1000&auto=format&fit=crop'
-  };
-
-  const handleAddToCart = (product: typeof mockProduct) => {
+  const handleAddToCart = (product: Product) => {
     console.log('Added to cart:', product);
   };
 
   return (
-    <div className="container mx-auto p-8 flex flex-col items-center justify-center min-h-[50vh]">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">Featured Product</h1>
-      <div className="w-full max-w-sm">
-        <ProductCard
-          product={mockProduct}
-          onAddToCart={handleAddToCart}
-        />
-      </div>
+    <div className="min-h-screen bg-gray-100">
+      <header className="bg-white shadow-sm mb-8">
+        <div className="container mx-auto px-4 py-6">
+          <h1 className="text-2xl font-bold text-gray-800">Simple Product Shop</h1>
+        </div>
+      </header>
+
+      <main>
+        <ProductCatalog onAddToCart={handleAddToCart} />
+      </main>
     </div>
   );
 }

@@ -12,6 +12,12 @@
     "types": [
       "vite/client"
     ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
     "skipLibCheck": true,
     /* Bundler mode */
     "moduleResolution": "bundler",
