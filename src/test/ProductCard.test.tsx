@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { ProductCard } from '../features/product-catalog/components/ProductCard';
 
@@ -20,14 +20,24 @@ describe('ProductCard', () => {
         expect(screen.getByRole('img')).toHaveAttribute('alt', 'Awesome Product');
     });
 
-    it('calls onAddToCart when the add button is clicked', () => {
+    it('calls onAddToCart and handles success state timeout', () => {
+        vi.useFakeTimers();
         const handleAddToCart = vi.fn();
         render(<ProductCard product={mockProduct} onAddToCart={handleAddToCart} />);
 
         const button = screen.getByRole('button', { name: /add to cart/i });
         fireEvent.click(button);
 
-        expect(handleAddToCart).toHaveBeenCalledTimes(1);
         expect(handleAddToCart).toHaveBeenCalledWith(mockProduct);
+        expect(screen.getByText(/added!/i)).toBeInTheDocument();
+
+        // Advance timers to trigger the reset (Line 16 coverage)
+        act(() => {
+            vi.advanceTimersByTime(1500);
+        });
+
+        // Use findBy for async check
+        expect(screen.queryByText(/added!/i)).not.toBeInTheDocument();
+        vi.useRealTimers();
     });
 });

@@ -4,7 +4,7 @@ import { BUSINESS_RULES } from '@/shared/constants';
 
 export class OrderDiscountStrategy implements DiscountStrategy {
     public readonly name = 'Order Discount';
-    public readonly description = '15% off on orders over $100';
+    public readonly description = BUSINESS_RULES.DISCOUNTS.ORDER_VALUE.DESCRIPTION;
 
     private get minSubtotal(): number {
         return BUSINESS_RULES.DISCOUNTS.ORDER_VALUE.MIN_SUBTOTAL;

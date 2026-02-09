@@ -35,4 +35,9 @@ describe('OrderDiscountStrategy', () => {
 
         expect(strategy.calculate(mockItems, subtotal)).toBe(expectedDiscount);
     });
+
+    it('returns 0 discount if calculate is called with subtotal below threshold', () => {
+        const subtotal = threshold - 1;
+        expect(strategy.calculate(mockItems, subtotal)).toBe(0);
+    });
 });

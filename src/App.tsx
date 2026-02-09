@@ -1,6 +1,7 @@
 import { ProductCatalog } from './features/product-catalog/components/ProductCatalog';
 import { ShoppingCart } from './features/shopping-cart/ShoppingCart';
-import { CartProvider, useCart } from './context/CartContext';
+import { CartProvider } from './context/CartContext';
+import { useCart } from './context/useCart';
 import type { Product } from '@/shared/types';
 
 const MainLayout = () => {

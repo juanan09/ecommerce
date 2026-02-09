@@ -4,7 +4,7 @@ import { BUSINESS_RULES } from '@/shared/constants'; // Adjusted import to use i
 
 export class BulkDiscountStrategy implements DiscountStrategy {
     public readonly name = 'Bulk Discount';
-    public readonly description = '10% off on items with 5 or more units';
+    public readonly description = BUSINESS_RULES.DISCOUNTS.BULK.DESCRIPTION;
 
     private get minItems(): number {
         return BUSINESS_RULES.DISCOUNTS.BULK.MIN_ITEMS;
@@ -18,7 +18,7 @@ export class BulkDiscountStrategy implements DiscountStrategy {
         return items.some((item) => item.quantity >= this.minItems);
     }
 
-    public calculate(items: CartItem[], _subtotal: number): number {
+    public calculate(items: CartItem[]): number {
         return items.reduce((totalDiscount, item) => {
             if (item.quantity >= this.minItems) {
                 const itemSubtotal = item.product.price * item.quantity;

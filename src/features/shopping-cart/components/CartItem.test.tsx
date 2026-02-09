@@ -2,6 +2,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { CartItem } from './CartItem';
 import { formatPrice } from '@/shared/utils';
+import { BUSINESS_RULES } from '@/shared/constants';
 
 // Mock formatPrice to make testing strings predictable if needed,
 // strictly speaking we could use real implementation but for unit tests
@@ -23,93 +24,86 @@ describe('CartItem', () => {
         quantity: 2
     };
 
-    it('renders item details correctly', () => {
-        render(
-            <CartItem
-                item={mockItem}
-                onUpdateQuantity={() => { }}
-                onRemove={() => { }}
-            />
-        );
+    it('renders all product info correctly', () => {
+        render(<CartItem item={mockItem} onUpdateQuantity={vi.fn()} onRemove={vi.fn()} />);
 
         expect(screen.getByText('Test Product')).toBeInTheDocument();
-        expect(screen.getByText(formatPrice(100))).toBeInTheDocument(); // Unit price
-        expect(screen.getByText(`Qty: ${2}`)).toBeInTheDocument();
+        expect(screen.getByText(formatPrice(100))).toBeInTheDocument();
+        expect(screen.getByTestId('item-quantity')).toHaveTextContent('2');
         expect(screen.getByRole('img')).toHaveAttribute('src', 'test.jpg');
+        expect(screen.getByRole('img')).toHaveAttribute('alt', 'Test Product');
+        expect(screen.getByText('Test Product')).toHaveAttribute('title', 'Test Product');
     });
 
-    it('renders calculated subtotal', () => {
-        render(
-            <CartItem
-                item={mockItem}
-                onUpdateQuantity={() => { }}
-                onRemove={() => { }}
-            />
-        );
+    it('handles quantity increase', () => {
+        const onUpdate = vi.fn();
+        render(<CartItem item={mockItem} onUpdateQuantity={onUpdate} onRemove={vi.fn()} />);
 
-        // Subtotal = 100 * 2 = 200
-        expect(screen.getByText(formatPrice(200))).toBeInTheDocument();
+        const incBtn = screen.getByLabelText(/increase quantity/i);
+        fireEvent.click(incBtn);
+
+        expect(onUpdate).toHaveBeenCalledWith(3);
     });
 
-    it('calls onUpdateQuantity with incremented value when + is clicked', () => {
-        const handleUpdate = vi.fn();
-        render(
-            <CartItem
-                item={mockItem}
-                onUpdateQuantity={handleUpdate}
-                onRemove={() => { }}
-            />
-        );
+    it('handles quantity decrease when possible', () => {
+        const onUpdate = vi.fn();
+        render(<CartItem item={mockItem} onUpdateQuantity={onUpdate} onRemove={vi.fn()} />);
 
-        const increaseBtn = screen.getByRole('button', { name: /increase quantity/i });
-        fireEvent.click(increaseBtn);
+        const decBtn = screen.getByLabelText(/decrease quantity/i);
+        fireEvent.click(decBtn);
 
-        expect(handleUpdate).toHaveBeenCalledWith(3);
+        expect(onUpdate).toHaveBeenCalledWith(1);
     });
 
-    it('calls onUpdateQuantity with decremented value when - is clicked', () => {
-        const handleUpdate = vi.fn();
-        render(
-            <CartItem
-                item={mockItem}
-                onUpdateQuantity={handleUpdate}
-                onRemove={() => { }}
-            />
-        );
+    it('disables decrease button when at minimum quantity', () => {
+        const minItem = { ...mockItem, quantity: BUSINESS_RULES.QUANTITY.MIN };
+        render(<CartItem item={minItem} onUpdateQuantity={vi.fn()} onRemove={vi.fn()} />);
 
-        const decreaseBtn = screen.getByRole('button', { name: /decrease quantity/i });
-        fireEvent.click(decreaseBtn);
-
-        expect(handleUpdate).toHaveBeenCalledWith(1);
+        const decBtn = screen.getByLabelText(/decrease quantity/i);
+        expect(decBtn).toBeDisabled();
+        expect(decBtn).toHaveClass('disabled:opacity-30');
     });
 
-    it('disables decrease button when quantity is 1', () => {
-        const itemWithOne = { ...mockItem, quantity: 1 };
-        render(
-            <CartItem
-                item={itemWithOne}
-                onUpdateQuantity={() => { }}
-                onRemove={() => { }}
-            />
-        );
+    it('enables decrease button when above minimum quantity', () => {
+        const normalItem = { ...mockItem, quantity: BUSINESS_RULES.QUANTITY.MIN + 1 };
+        render(<CartItem item={normalItem} onUpdateQuantity={vi.fn()} onRemove={vi.fn()} />);
 
-        const decreaseBtn = screen.getByRole('button', { name: /decrease quantity/i });
-        expect(decreaseBtn).toBeDisabled();
+        const decBtn = screen.getByLabelText(/decrease quantity/i);
+        expect(decBtn).not.toBeDisabled();
     });
 
-    it('calls onRemove when remove button is clicked', () => {
-        const handleRemove = vi.fn();
-        render(
-            <CartItem
-                item={mockItem}
-                onUpdateQuantity={() => { }}
-                onRemove={handleRemove}
-            />
-        );
+    it('triggers remove callback', () => {
+        const onRemove = vi.fn();
+        render(<CartItem item={mockItem} onUpdateQuantity={vi.fn()} onRemove={onRemove} />);
 
-        const removeBtn = screen.getByRole('button', { name: /remove item/i });
+        const removeBtn = screen.getByLabelText(/remove item/i);
         fireEvent.click(removeBtn);
 
-        expect(handleRemove).toHaveBeenCalledTimes(1);
+        expect(onRemove).toHaveBeenCalledTimes(1);
+    });
+
+    it('has correct visual styles and layout classes', () => {
+        render(<CartItem item={mockItem} onUpdateQuantity={vi.fn()} onRemove={vi.fn()} />);
+
+        const container = screen.getByTestId('cart-item');
+        expect(container).toHaveClass('flex', 'gap-3', 'p-3', 'bg-white');
+
+        const price = screen.getByText(formatPrice(100));
+        expect(price).toHaveClass('text-xs', 'text-gray-500', 'font-medium');
+
+        const name = screen.getByText('Test Product');
+        expect(name).toHaveClass('text-sm', 'font-semibold', 'text-gray-900');
+    });
+
+    it('renders the trash icon inside remove button', () => {
+        render(<CartItem item={mockItem} onUpdateQuantity={vi.fn()} onRemove={vi.fn()} />);
+        const removeBtn = screen.getByLabelText(/remove item/i);
+        const svg = removeBtn.querySelector('svg');
+        const path = svg?.querySelector('path');
+
+        expect(svg).toBeInTheDocument();
+        expect(path).toBeInTheDocument();
+        expect(svg).toHaveClass('h-4', 'w-4');
     });
 });
+

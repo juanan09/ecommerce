@@ -7,7 +7,11 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+coverage
+playwright-report
 node_modules
+e2e/visual.spec.ts-snapshots
+test-results
 dist
 dist-ssr
 *.local

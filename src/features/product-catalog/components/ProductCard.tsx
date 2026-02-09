@@ -17,7 +17,7 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full group">
+        <div data-testid="product-card" className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full group">
             <div className="relative overflow-hidden">
                 <img
                     src={product.image}

@@ -1,5 +1,6 @@
 import type { CartItem as CartItemType } from '@/shared/types';
 import { formatPrice } from '@/shared/utils';
+import { BUSINESS_RULES } from '@/shared/constants';
 
 interface CartItemProps {
     item: CartItemType;
@@ -11,7 +12,7 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove }: CartItemProps) =>
     const { product, quantity } = item;
 
     return (
-        <div className="flex gap-3 p-3 bg-white border-b border-gray-100 last:border-b-0 group">
+        <div data-testid="cart-item" className="flex gap-3 p-3 bg-white border-b border-gray-100 last:border-b-0 group">
             {/* Image */}
             <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 bg-gray-50">
                 <img
@@ -37,18 +38,20 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove }: CartItemProps) =>
                     <div className="flex items-center h-7 rounded border border-gray-200">
                         <button
                             onClick={() => onUpdateQuantity(quantity - 1)}
-                            disabled={quantity <= 1}
+                            disabled={quantity <= BUSINESS_RULES.QUANTITY.MIN}
+                            aria-label="Decrease quantity"
                             className="w-7 h-full flex items-center justify-center text-gray-500 hover:bg-gray-50 hover:text-gray-700 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
                         >
                             -
                         </button>
                         <div className="w-px h-3 bg-gray-200"></div>
-                        <span className="w-8 flex items-center justify-center text-xs font-medium text-gray-700">
+                        <span data-testid="item-quantity" className="w-8 flex items-center justify-center text-xs font-medium text-gray-700">
                             {quantity}
                         </span>
                         <div className="w-px h-3 bg-gray-200"></div>
                         <button
                             onClick={() => onUpdateQuantity(quantity + 1)}
+                            aria-label="Increase quantity"
                             className="w-7 h-full flex items-center justify-center text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors"
                         >
                             +

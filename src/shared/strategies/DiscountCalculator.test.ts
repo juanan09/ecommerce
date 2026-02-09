@@ -97,4 +97,23 @@ describe('DiscountCalculator', () => {
         expect(breakdown[1].name).toBe(orderStrategy.name);
         expect(breakdown[1].amount).toBe(16.875);
     });
+
+    it('does not add zero-amount discounts to the breakdown', () => {
+        // Use a fresh calculator to avoid interference from strategies in beforeEach
+        const cleanCalculator = new DiscountCalculator();
+
+        // Mock a strategy that is applicable but returns 0 discount
+        const zeroStrategy = {
+            name: 'Zero Strategy',
+            description: 'Always returns 0',
+            isApplicable: () => true,
+            calculate: () => 0
+        };
+
+        cleanCalculator.registerStrategy(zeroStrategy);
+        const discount = cleanCalculator.calculate([], 100);
+
+        expect(discount).toBe(0);
+        expect(cleanCalculator.getBreakdown()).toEqual([]);
+    });
 });

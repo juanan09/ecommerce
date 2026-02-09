@@ -30,7 +30,7 @@ export const CartSummary = ({ subtotal, discount, total, discountBreakdown, item
             <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-gray-600">
                     <span>Subtotal ({itemCount} items)</span>
-                    <span>{formatPrice(subtotal)}</span>
+                    <span data-testid="cart-summary-subtotal">{formatPrice(subtotal)}</span>
                 </div>
 
                 {discountBreakdown.map((item) => (
@@ -51,7 +51,7 @@ export const CartSummary = ({ subtotal, discount, total, discountBreakdown, item
 
                 <div className="flex justify-between text-xl font-bold text-gray-800">
                     <span>Total</span>
-                    <span>{formatPrice(total)}</span>
+                    <span data-testid="cart-summary-total">{formatPrice(total)}</span>
                 </div>
             </div>
 

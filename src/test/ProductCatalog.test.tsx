@@ -23,12 +23,18 @@ vi.mock('../shared/data/products', () => ({
 }));
 
 describe('ProductCatalog', () => {
-    it('renders the catalog title and products', () => {
+    it('renders the catalog title and all mock products', () => {
         const handleAddToCart = vi.fn();
         render(<ProductCatalog onAddToCart={handleAddToCart} />);
 
         expect(screen.getByRole('heading', { name: /products/i })).toBeInTheDocument();
+
+        // Check that both mock products are rendered
         expect(screen.getByText('Test Product 1')).toBeInTheDocument();
         expect(screen.getByText('Test Product 2')).toBeInTheDocument();
+
+        // Verify we have exactly 2 product cards
+        const productCards = screen.getAllByTestId('product-card');
+        expect(productCards).toHaveLength(2);
     });
 });
