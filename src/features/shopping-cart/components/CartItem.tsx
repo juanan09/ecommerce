@@ -9,56 +9,63 @@ interface CartItemProps {
 
 export const CartItem = ({ item, onUpdateQuantity, onRemove }: CartItemProps) => {
     const { product, quantity } = item;
-    const subtotal = product.price * quantity;
 
     return (
-        <div className="flex items-center p-4 border-b border-gray-200 gap-4 bg-white">
-            <img
-                src={product.image}
-                alt={product.name}
-                className="w-20 h-20 object-cover rounded-md"
-            />
-
-            <div className="flex-grow">
-                <h3 className="text-lg font-medium text-gray-800">{product.name}</h3>
-                <p className="text-sm text-gray-500">{formatPrice(product.price)}</p>
+        <div className="flex gap-3 p-3 bg-white border-b border-gray-100 last:border-b-0 group">
+            {/* Image */}
+            <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-md border border-gray-200 bg-gray-50">
+                <img
+                    src={product.image}
+                    alt={product.name}
+                    className="h-full w-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                />
             </div>
 
-            <div className="flex items-center gap-3">
-                <div className="flex items-center border rounded-md">
+            {/* Content Column */}
+            <div className="flex flex-1 flex-col justify-center gap-1">
+                {/* Name */}
+                <h3 className="text-sm font-semibold text-gray-900 line-clamp-1" title={product.name}>
+                    {product.name}
+                </h3>
+
+                {/* Price */}
+                <p className="text-xs text-gray-500 font-medium">{formatPrice(product.price)}</p>
+
+                {/* Controls Row */}
+                <div className="flex items-center gap-2 mt-1">
+                    {/* Quantity Controls */}
+                    <div className="flex items-center h-7 rounded border border-gray-200">
+                        <button
+                            onClick={() => onUpdateQuantity(quantity - 1)}
+                            disabled={quantity <= 1}
+                            className="w-7 h-full flex items-center justify-center text-gray-500 hover:bg-gray-50 hover:text-gray-700 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
+                        >
+                            -
+                        </button>
+                        <div className="w-px h-3 bg-gray-200"></div>
+                        <span className="w-8 flex items-center justify-center text-xs font-medium text-gray-700">
+                            {quantity}
+                        </span>
+                        <div className="w-px h-3 bg-gray-200"></div>
+                        <button
+                            onClick={() => onUpdateQuantity(quantity + 1)}
+                            className="w-7 h-full flex items-center justify-center text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors"
+                        >
+                            +
+                        </button>
+                    </div>
+
+                    {/* Remove Button */}
                     <button
-                        onClick={() => onUpdateQuantity(quantity - 1)}
-                        disabled={quantity <= 1}
-                        aria-label="decrease quantity"
-                        className="px-3 py-1 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed text-gray-600"
+                        onClick={onRemove}
+                        className="bg-transparent h-7 w-7 flex items-center justify-center text-gray-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                        aria-label="remove item"
                     >
-                        -
-                    </button>
-                    <span className="px-3 py-1 font-medium text-gray-800">
-                        Qty: {quantity}
-                    </span>
-                    <button
-                        onClick={() => onUpdateQuantity(quantity + 1)}
-                        aria-label="increase quantity"
-                        className="px-3 py-1 hover:bg-gray-100 text-gray-600"
-                    >
-                        +
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
                     </button>
                 </div>
-
-                <div className="text-right min-w-[100px]">
-                    <p className="font-semibold text-gray-800">{formatPrice(subtotal)}</p>
-                </div>
-
-                <button
-                    onClick={onRemove}
-                    aria-label="remove item"
-                    className="text-red-500 hover:text-red-700 p-2"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                    </svg>
-                </button>
             </div>
         </div>
     );
