@@ -1,75 +1,133 @@
-# React + TypeScript + Vite
+# Simple Product Shop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Status](https://img.shields.io/badge/status-active-success.svg)
+![React](https://img.shields.io/badge/react-v19.0.0-blue.svg)
+![TypeScript](https://img.shields.io/badge/typescript-v5.7.2-blue.svg)
+![Vite](https://img.shields.io/badge/vite-v6.1.0-646CFF.svg)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-v4.0.0-38B2AC.svg)
+![Vitest](https://img.shields.io/badge/vitest-v3.0.4-729B1B.svg)
 
-Currently, two official plugins are available:
+A modern e-commerce application built with React, TypeScript, and Vite. This project demonstrates best practices in frontend development, including meaningful component architecture, reusable styling with Tailwind CSS, rigorous testing with Vitest/Playwright, and accessibility (a11y) compliance.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## React Compiler
+### Core Functionality
+- **Product Catalog**: Browse products with loading states, hover effects, and responsive grid layout.
+- **Shopping Cart**:
+  - Add/remove items.
+  - Update quantities.
+  - Real-time subtotal calculation.
+  - **Discount System**:
+    - **Bulk Discount**: 10% off when buying 10 or more of the same item.
+    - **Order Discount**: 20% off when cart total exceeds $200.
+    - Visual breakdown of savings in the cart summary.
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### Components & UI
+- **Global Toast Notification System**:
+  - Context-based global notifications (Scope: Global).
+  - Variants: Success, Error, Info.
+  - Accessible (ARIA alerts) and auto-dismissable.
+- **Loading Skeletons**:
+  - Reusable `Skeleton` component (text, rectangular, circular variants).
+  - `ProductCardSkeleton` for seamless loading experiences.
+- **Accessible Forms**:
+  - **LoginDemo**: Demonstrates form validation, error handling, and security features (lockout after 3 attempts).
+  - **PasswordInput**: Reusable password field with visibility toggle, strength meter, and validation requirements checklist.
+- **Accessibility (a11y)**:
+  - `aria-live` regions for screen reader announcements (e.g., cart updates).
+  - Keyboard navigation support (`focus-visible` styles).
+  - Semantic HTML structure.
+  - `sr-only` utilities for non-visual feedback.
 
-Note: This will impact Vite dev & build performances.
+## 🛠 Tech Stack
 
-## Expanding the ESLint configuration
+- **Framework**: [React 19](https://react.dev/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **State Management**: React Context API (`CartContext`, `ToastContext`)
+- **Testing**:
+  - **Unit/Integration**: [Vitest](https://vitest.dev/) & [React Testing Library](https://testing-library.com/)
+  - **E2E/Visual**: [Playwright](https://playwright.dev/)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📂 Project Structure
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+src/
+├── context/            # Global state (CartContext, ToastContext)
+├── features/           # Feature-based modules
+│   ├── auth/           # Authentication components (LoginDemo, PasswordInput)
+│   ├── product-catalog/# Product listing & cards
+│   └── shopping-cart/  # Cart management & summary
+├── shared/             # Shared resources
+│   ├── components/     # Reusable UI components (Toast, Skeleton)
+│   ├── data/           # Mock data
+│   ├── strategies/     # Logic patterns (Discount strategies)
+│   ├── types/          # TypeScript definitions
+│   └── utils/          # Helper functions (currency format, validation)
+├── test/               # Global test setups & integration tests
+├── App.tsx             # Main application entry
+└── main.tsx            # DOM mounting
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## ⚡ Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/simple-product-shop.git
+   cd simple-product-shop
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+### Running Tests
+
+This project enforces high code quality with comprehensive testing.
+
+- **Unit Tests**:
+  ```bash
+  npm run test
+  ```
+- **Test Coverage**:
+  ```bash
+  npm run test:coverage
+  ```
+  *Current Coverage: ~88% Statements, ~75% Branches, 100% Functions.*
+
+- **Linting**:
+  ```bash
+  npm run lint
+  ```
+
+## 🧪 Testing Strategy
+
+The project employs **Test-Driven Development (TDD)** for critical logic (e.g., discount calculations, form validation).
+
+- **Unit Tests**: Focus on utility functions (`calculateSubtotal`, `validatePassword`) and individual components in isolation.
+- **Integration Tests**: Verify interactions between providers (Cart, Toast) and feature components.
+- **Visual Regression**: Ensures UI consistency using Playwright snapshots.
+
+## 🎨 Design Decisions
+
+1. **Context for State**: Used `Context API` over Redux/Zustand due to moderate complexity. `CartContext` and `ToastContext` decouple logic effectively.
+2. **Strategy Pattern for Discounts**: Logic for calculating discounts is encapsulated in strategy classes (`BulkDiscountStrategy`, `OrderDiscountStrategy`), making it easy to add new discount types without modifying the core cart logic.
+3. **Accessibility First**: Components are built with screen readers and keyboard users in mind from the start, not as an afterthought.
+
+## 📝 License
+
+This project is licensed under the MIT License.
