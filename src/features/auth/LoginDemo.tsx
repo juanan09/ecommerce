@@ -1,0 +1,113 @@
+
+import React, { useState } from 'react';
+import { PasswordInput } from './components/PasswordInput';
+import { validatePassword } from '@/shared/utils/validatePassword';
+
+export const LoginDemo: React.FC = () => {
+    const [email, setEmail] = useState('');
+    const [emailTouched, setEmailTouched] = useState(false);
+    const [password, setPassword] = useState('');
+    const [status, setStatus] = useState<'idle' | 'success' | 'error' | 'locked'>('idle');
+    const [attempts, setAttempts] = useState(0);
+    const [message, setMessage] = useState('');
+
+    const maxAttempts = 3;
+
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isPasswordValid = validatePassword(password).isValid;
+    const isFormValid = isEmailValid && isPasswordValid && status !== 'locked';
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (status === 'locked') return;
+
+        if (email === 'demo@example.com') {
+            setStatus('success');
+            setMessage('Login successful!');
+            setAttempts(0);
+        } else {
+            const newAttempts = attempts + 1;
+            setAttempts(newAttempts);
+
+            if (newAttempts >= maxAttempts) {
+                setStatus('locked');
+                setMessage('Too many attempts. Form is locked.');
+            } else {
+                setStatus('error');
+                setMessage(`Invalid credentials. ${maxAttempts - newAttempts} attempts remaining.`);
+            }
+        }
+    };
+
+    const getMessageClasses = () => {
+        switch (status) {
+            case 'success':
+                return 'bg-green-100 text-green-700';
+            case 'error':
+                return 'bg-red-100 text-red-700';
+            case 'locked':
+                return 'bg-gray-100 text-gray-700 border border-gray-300';
+            default:
+                return '';
+        }
+    };
+
+    return (
+        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md border border-gray-200">
+            <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Login Demo</h2>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+                {/* ... existing input code ... */}
+                <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                        Email Address
+                    </label>
+                    <input
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        onBlur={() => setEmailTouched(true)}
+                        disabled={status === 'locked'}
+                        className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 ${emailTouched && !isEmailValid ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'} disabled:bg-gray-100 disabled:text-gray-500`}
+                        placeholder="demo@example.com"
+                    />
+                </div>
+
+                <div>
+                    <span className="block text-sm font-medium text-gray-700 mb-1" id="password-label">
+                        Password
+                    </span>
+                    <div>
+                        <PasswordInput
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            showRequirements={true}
+                            disabled={status === 'locked'}
+                        />
+                    </div>
+                </div>
+
+                {message && (
+                    <div className={`p-3 rounded-md text-sm ${getMessageClasses()}`}>
+                        {message}
+                    </div>
+                )}
+
+                <button
+                    type="submit"
+                    disabled={!isFormValid}
+                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                >
+                    {status === 'locked' ? 'Locked' : 'Login'}
+                </button>
+            </form>
+
+            <div className="mt-4 text-xs text-gray-500 text-center">
+                <p>Use <strong>demo@example.com</strong> for successful login.</p>
+                <p>Password must meet all requirements.</p>
+            </div>
+        </div>
+    );
+};

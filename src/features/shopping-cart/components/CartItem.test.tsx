@@ -76,7 +76,7 @@ describe('CartItem', () => {
         const onRemove = vi.fn();
         render(<CartItem item={mockItem} onUpdateQuantity={vi.fn()} onRemove={onRemove} />);
 
-        const removeBtn = screen.getByLabelText(/remove item/i);
+        const removeBtn = screen.getByLabelText(/remove .* from cart/i);
         fireEvent.click(removeBtn);
 
         expect(onRemove).toHaveBeenCalledTimes(1);
@@ -97,7 +97,7 @@ describe('CartItem', () => {
 
     it('renders the trash icon inside remove button', () => {
         render(<CartItem item={mockItem} onUpdateQuantity={vi.fn()} onRemove={vi.fn()} />);
-        const removeBtn = screen.getByLabelText(/remove item/i);
+        const removeBtn = screen.getByLabelText(/remove .* from cart/i);
         const svg = removeBtn.querySelector('svg');
         const path = svg?.querySelector('path');
 

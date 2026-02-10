@@ -18,7 +18,7 @@ describe('ShoppingCart Component', () => {
     });
 
     it('renders empty state correctly', () => {
-        (useCart as any).mockReturnValue({
+        vi.mocked(useCart).mockReturnValue({
             items: [],
             itemCount: 0,
             subtotal: 0,
@@ -27,6 +27,8 @@ describe('ShoppingCart Component', () => {
             discountBreakdown: [],
             updateQuantity: mockUpdateQuantity,
             removeItem: mockRemoveItem,
+            addItem: vi.fn(),
+            clearCart: vi.fn(),
         });
 
         render(<ShoppingCart />);
@@ -44,7 +46,9 @@ describe('ShoppingCart Component', () => {
             }
         ];
 
-        (useCart as any).mockReturnValue({
+        vi.mocked(useCart).mockReturnValue({
+            addItem: vi.fn(),
+            clearCart: vi.fn(),
             items: mockItems,
             itemCount: 2,
             subtotal: 20,
@@ -76,7 +80,9 @@ describe('ShoppingCart Component', () => {
             }
         ];
 
-        (useCart as any).mockReturnValue({
+        vi.mocked(useCart).mockReturnValue({
+            addItem: vi.fn(),
+            clearCart: vi.fn(),
             items: mockItems,
             itemCount: 2,
             subtotal: 20,
@@ -95,7 +101,7 @@ describe('ShoppingCart Component', () => {
         expect(mockUpdateQuantity).toHaveBeenCalledWith('1', 3);
 
         // Interaction with CartItem remove button
-        const removeBtn = screen.getByLabelText(/remove item/i);
+        const removeBtn = screen.getByLabelText(/remove .* from cart/i);
         fireEvent.click(removeBtn);
         expect(mockRemoveItem).toHaveBeenCalledWith('1');
     });

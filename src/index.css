@@ -4,7 +4,7 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -13,4 +13,20 @@
 
 body {
   @apply bg-gray-50 text-gray-900;
+}
+
+/* Global Focus Styles */
+:focus-visible {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+}
+
+/* Remove default outline for mouse clicks if needed */
+:focus:not(:focus-visible) {
+  @apply outline-none ring-0;
+}
+
+/* Screen Reader Only Utility */
+.sr-only {
+  @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+  clip: rect(0, 0, 0, 0);
 }

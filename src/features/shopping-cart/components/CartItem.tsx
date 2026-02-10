@@ -39,7 +39,7 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove }: CartItemProps) =>
                         <button
                             onClick={() => onUpdateQuantity(quantity - 1)}
                             disabled={quantity <= BUSINESS_RULES.QUANTITY.MIN}
-                            aria-label="Decrease quantity"
+                            aria-label={`Decrease quantity of ${product.name}`}
                             className="w-7 h-full flex items-center justify-center text-gray-500 hover:bg-gray-50 hover:text-gray-700 disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
                         >
                             -
@@ -51,7 +51,7 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove }: CartItemProps) =>
                         <div className="w-px h-3 bg-gray-200"></div>
                         <button
                             onClick={() => onUpdateQuantity(quantity + 1)}
-                            aria-label="Increase quantity"
+                            aria-label={`Increase quantity of ${product.name}`}
                             className="w-7 h-full flex items-center justify-center text-gray-500 hover:bg-gray-50 hover:text-gray-700 transition-colors"
                         >
                             +
@@ -62,7 +62,7 @@ export const CartItem = ({ item, onUpdateQuantity, onRemove }: CartItemProps) =>
                     <button
                         onClick={onRemove}
                         className="bg-transparent h-7 w-7 flex items-center justify-center text-gray-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
-                        aria-label="remove item"
+                        aria-label={`Remove ${product.name} from cart`}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
