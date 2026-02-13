@@ -1,13 +1,33 @@
 
 
-echo "🔍 Running pre-commit checks..."
+# Define colors (optional fallback for non-TTY)
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+echo -e "${BLUE}=======================================${NC}"
+echo -e "${BLUE}🔍  Running PRE-COMMIT checks...      ${NC}"
+echo -e "${BLUE}=======================================${NC}"
 
 # Lint
-echo "📝 Checking lint..."
-npm run lint || exit 1
+echo -e "\n${BLUE}📝  Validating code style (Lint)...${NC}"
+if npm run lint; then
+    echo -e "${GREEN}✓ Lint passed${NC}"
+else
+    echo -e "${RED}❌ Lint failed. Please fix the errors above.${NC}"
+    exit 1
+fi
 
 # Typecheck
-echo "🔷 Checking types..."
-npm run typecheck || exit 1
+echo -e "\n${BLUE}🔷  Checking TypeScript types...${NC}"
+if npm run typecheck; then
+    echo -e "${GREEN}✓ Typecheck passed${NC}"
+else
+    echo -e "${RED}❌ Typecheck failed. Please fix the type errors above.${NC}"
+    exit 1
+fi
 
-echo "✅ Pre-commit checks passed!"
+echo -e "\n${GREEN}=======================================${NC}"
+echo -e "${GREEN}✅  All pre-commit checks passed!     ${NC}"
+echo -e "${GREEN}=======================================${NC}"
