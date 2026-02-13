@@ -18,7 +18,7 @@ export const LoginDemo: React.FC = () => {
     const isPasswordValid = validatePassword(password).isValid;
     const isFormValid = isEmailValid && isPasswordValid && status !== 'locked';
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (status === 'locked') return;
@@ -60,8 +60,6 @@ export const LoginDemo: React.FC = () => {
 
     const getMessageClasses = () => {
         switch (status) {
-            case 'success':
-                return 'bg-green-100 text-green-700';
             case 'error':
                 return 'bg-red-100 text-red-700';
             case 'locked':

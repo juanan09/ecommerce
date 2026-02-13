@@ -105,4 +105,73 @@ describe('ShoppingCart Component', () => {
         fireEvent.click(removeBtn);
         expect(mockRemoveItem).toHaveBeenCalledWith('1');
     });
+
+    it('renders multiple items correctly', () => {
+        const mockItems = [
+            {
+                product: { id: '1', name: 'Product 1', price: 10, image: 'img1.jpg', description: 'desc1' },
+                quantity: 2
+            },
+            {
+                product: { id: '2', name: 'Product 2', price: 20, image: 'img2.jpg', description: 'desc2' },
+                quantity: 1
+            },
+            {
+                product: { id: '3', name: 'Product 3', price: 30, image: 'img3.jpg', description: 'desc3' },
+                quantity: 3
+            }
+        ];
+
+        vi.mocked(useCart).mockReturnValue({
+            addItem: vi.fn(),
+            clearCart: vi.fn(),
+            items: mockItems,
+            itemCount: 6,
+            subtotal: 130,
+            discount: 0,
+            total: 130,
+            discountBreakdown: [],
+            updateQuantity: mockUpdateQuantity,
+            removeItem: mockRemoveItem,
+        });
+
+        render(<ShoppingCart />);
+
+        expect(screen.getByText('Product 1')).toBeInTheDocument();
+        expect(screen.getByText('Product 2')).toBeInTheDocument();
+        expect(screen.getByText('Product 3')).toBeInTheDocument();
+    });
+
+    it('displays discount information when discounts are applied', () => {
+        const mockItems = [
+            {
+                product: { id: '1', name: 'Product 1', price: 100, image: 'img1.jpg', description: 'desc1' },
+                quantity: 5
+            }
+        ];
+
+        const discountBreakdown = [
+            { name: 'Bulk Discount', amount: 50 },
+            { name: 'Order Discount', amount: 75 }
+        ];
+
+        vi.mocked(useCart).mockReturnValue({
+            addItem: vi.fn(),
+            clearCart: vi.fn(),
+            items: mockItems,
+            itemCount: 5,
+            subtotal: 500,
+            discount: 125,
+            total: 375,
+            discountBreakdown,
+            updateQuantity: mockUpdateQuantity,
+            removeItem: mockRemoveItem,
+        });
+
+        render(<ShoppingCart />);
+
+        expect(screen.getByText('Bulk Discount')).toBeInTheDocument();
+        expect(screen.getByText('Order Discount')).toBeInTheDocument();
+        expect(screen.getByTestId('cart-summary-total')).toHaveTextContent(formatPrice(375));
+    });
 });

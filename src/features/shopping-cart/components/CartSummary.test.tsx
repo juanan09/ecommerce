@@ -162,4 +162,21 @@ describe('CartSummary', () => {
         render(<CartSummary subtotal={100} discount={0} total={100} itemCount={10} discountBreakdown={[]} />);
         expect(screen.getByText(/Subtotal \(10 items\)/i)).toBeInTheDocument();
     });
+
+    it('does not render discount breakdown section when array is empty and discount is 0', () => {
+        render(<CartSummary subtotal={100} discount={0} total={100} itemCount={5} discountBreakdown={[]} />);
+
+        // Should not have any discount-related elements
+        expect(screen.queryByText(/discount/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/-\$/)).not.toBeInTheDocument();
+    });
+
+    it('renders promotional message with correct calculation when close to threshold', () => {
+        // $95 subtotal, need $5 more to reach $100 threshold
+        render(<CartSummary subtotal={95} discount={0} total={95} itemCount={3} discountBreakdown={[]} />);
+
+        const promoMessage = screen.getByText(/Add \$5\.00 more for 15% off!/i);
+        expect(promoMessage).toBeInTheDocument();
+        expect(promoMessage).toHaveClass('bg-blue-50', 'text-blue-700');
+    });
 });

@@ -22,6 +22,53 @@ describe('Skeleton', () => {
         // If implementation details are not fixed, we check intended behavior.
     });
 
+    it('applies circular variant classes', () => {
+        const { container } = render(<Skeleton variant="circular" />);
+        const skeleton = container.querySelector('[role="status"]');
+        expect(skeleton).toHaveClass('rounded-full');
+    });
+
+    it('applies width and height styles when provided', () => {
+        const { container } = render(<Skeleton width="200px" height="100px" />);
+        const skeleton = container.querySelector('[role="status"]') as HTMLElement;
+        expect(skeleton?.style.width).toBe('200px');
+        expect(skeleton?.style.height).toBe('100px');
+    });
+
+    it('applies numeric width and height', () => {
+        const { container } = render(<Skeleton width={150} height={75} />);
+        const skeleton = container.querySelector('[role="status"]') as HTMLElement;
+        expect(skeleton?.style.width).toBe('150px');
+        expect(skeleton?.style.height).toBe('75px');
+    });
+
+    it('uses default text variant when variant is not specified', () => {
+        const { container } = render(<Skeleton />);
+        const skeleton = container.querySelector('[role="status"]');
+        expect(skeleton).toHaveClass('rounded');
+        expect(skeleton).not.toHaveClass('rounded-full');
+        expect(skeleton).not.toHaveClass('rounded-none');
+    });
+
+    it('applies only width when height is not provided', () => {
+        const { container } = render(<Skeleton width="50%" />);
+        const skeleton = container.querySelector('[role="status"]') as HTMLElement;
+        expect(skeleton?.style.width).toBe('50%');
+        expect(skeleton?.style.height).toBe('');
+    });
+
+    it('applies only height when width is not provided', () => {
+        const { container } = render(<Skeleton height="2rem" />);
+        const skeleton = container.querySelector('[role="status"]') as HTMLElement;
+        expect(skeleton?.style.height).toBe('2rem');
+        expect(skeleton?.style.width).toBe('');
+    });
+    it('renders rectangular variant correctly', () => {
+        render(<Skeleton variant="rectangular" />);
+        const skeleton = screen.getByRole('status');
+        expect(skeleton).toHaveClass('rounded-none'); // Or specific rounding for rectangular
+    });
+
     it('renders circular variant with full border radius', () => {
         render(<Skeleton variant="circular" />);
         const skeleton = screen.getByRole('status');

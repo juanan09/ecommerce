@@ -55,7 +55,7 @@ export const CartSummary = ({ subtotal, discount, total, discountBreakdown, item
                 </div>
             </div>
 
-            {showPromo && missingAmount > 0 && (
+            {showPromo && (
                 <div className="bg-blue-50 text-blue-700 p-3 rounded-md mb-6 text-sm">
                     Add {formatPrice(missingAmount)} more for {discountPercentage}% off!
                 </div>

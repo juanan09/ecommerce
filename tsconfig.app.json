@@ -38,9 +38,10 @@
     "src"
   ],
   "exclude": [
-    "src/**/__tests__/*",
-    "src/**/*.test.*",
-    "src/**/*.spec.*",
-    "src/setupTests.ts"
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/test",
+    "src/setupTests.ts",
+    "src/**/__tests__/*"
   ]
 }

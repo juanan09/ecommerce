@@ -125,4 +125,31 @@ describe('LoginDemo', () => {
         expect(passwordInput).toBeDisabled();
         expect(submitButton).toBeDisabled();
     });
+
+    it('allows user to logout', async () => {
+        const user = userEvent.setup();
+        render(<LoginDemo />);
+
+        // Login first
+        const emailInput = screen.getByLabelText(/email/i);
+        const passwordInput = screen.getByLabelText(/password/i);
+        const submitButton = screen.getByRole('button', { name: /login/i });
+
+        await user.type(emailInput, 'demo@example.com');
+        await user.type(passwordInput, 'ValidPass123!');
+        await user.click(submitButton);
+
+        await waitFor(() => {
+            expect(screen.getByText(/welcome back/i)).toBeInTheDocument();
+        });
+
+        // Click logout
+        const logoutButton = screen.getByRole('button', { name: /logout/i });
+        await user.click(logoutButton);
+
+        // Verify return to login form
+        expect(screen.getByText(/login demo/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/email/i)).toHaveValue('');
+        expect(screen.getByLabelText(/password/i)).toHaveValue('');
+    });
 });

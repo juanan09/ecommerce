@@ -73,4 +73,11 @@ describe('Toast', () => {
         expect(onClose).not.toHaveBeenCalled();
         vi.useRealTimers();
     });
+
+    it('applies default info styling when variant is not specified', () => {
+        render(<Toast message="Default variant" onClose={vi.fn()} />);
+        const alert = screen.getByRole('alert');
+        // Default should be 'info' styling
+        expect(alert).toHaveClass('bg-blue-100', 'text-blue-800', 'border-blue-200');
+    });
 });

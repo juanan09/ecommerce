@@ -7,6 +7,8 @@
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-v4.0.0-38B2AC.svg)
 ![Vitest](https://img.shields.io/badge/vitest-v3.0.4-729B1B.svg)
 
+> [🇪🇸 Leer en Español](README.es.md)
+
 A modern e-commerce application built with React, TypeScript, and Vite. This project demonstrates best practices in frontend development, including meaningful component architecture, reusable styling with Tailwind CSS, rigorous testing with Vitest/Playwright, and accessibility (a11y) compliance.
 
 ## 🚀 Features
@@ -49,6 +51,56 @@ A modern e-commerce application built with React, TypeScript, and Vite. This pro
 - **Testing**:
   - **Unit/Integration**: [Vitest](https://vitest.dev/) & [React Testing Library](https://testing-library.com/)
   - **E2E/Visual**: [Playwright](https://playwright.dev/)
+
+## 🛡️ Quality Assurance & Tools (QA)
+
+This project uses a robust set of tools to ensure code quality, accessibility, and stability in production.
+
+### 🧩 Linting & Static Analysis
+
+- **[eslint-plugin-jsx-a11y](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y)**:
+  - **What is it?**: An ESLint plugin that statically analyzes JSX for web accessibility issues.
+  - **Importance**: Crucial for ensuring the app is inclusive and usable by people with disabilities (screen readers, keyboard navigation). It detects common errors like missing `alt` text on images, incorrect ARIA roles, or unassociated form labels. Compliance improves SEO and overall UX.
+  
+- **[eslint-plugin-sonarjs](https://github.com/SonarSource/eslint-plugin-sonarjs)**:
+  - **What is it?**: Use rules from SonarQube to detect bugs, vulnerabilities, and code smells.
+  - **Importance**: Goes beyond code style; helps prevent complex logical errors (e.g., conditions that are always true/false), reduces cyclomatic complexity (making code easier to understand), and encourages long-term maintainability.
+
+### 🧪 End-to-End (E2E) Testing
+
+- **[Playwright](https://playwright.dev/)**:
+  - **What is it?**: A modern automation framework for E2E testing.
+  - **Importance**: Simulates real user interactions (logging in, adding items to cart, completing purchase) across multiple browser engines (Chromium, Firefox, WebKit). Unlike unit tests, Playwright verifies that the entire system works correctly together, just as an end-user would experience it.
+
+### 🚨 Error Monitoring
+
+- **[Sentry](https://sentry.io/)**:
+  - **What is it?**: Real-time error and performance monitoring platform.
+  - **Importance**: In production, errors are inevitable. Sentry captures unhandled exceptions in the user's browser and sends detailed reports with stack traces, breadcrumbs (user actions leading to error), and device context. This allows the dev team to react and fix critical bugs before they impact more users.
+
+---
+
+## 📊 Metrics Dashboard
+
+We have implemented a custom script to visualize project health at a glance.
+
+### Run Metrics
+```bash
+npm run metrics
+```
+
+This command runs a battery of analyses and displays:
+1. **🧪 Tests**: Status of the latest unit test run.
+2. **📈 Coverage**: Code coverage summary (Statements, Branches, Functions, Lines) with clear headers.
+3. **📝 Lint**: Static analysis status (errors/warnings).
+4. **📦 Bundle Size**: Size of JS files generated in `dist/` for production.
+
+### Visual Bundle Analysis
+For a deep dive into dependency weight:
+```bash
+npm run build
+```
+This will generate and automatically open `stats.html`, an interactive treemap of all project dependencies.
 
 ## 📂 Project Structure
 
@@ -107,7 +159,7 @@ This project enforces high code quality with comprehensive testing.
   ```bash
   npm run test:coverage
   ```
-  *Current Coverage: ~88% Statements, ~75% Branches, 100% Functions.*
+  *Current Coverage: ~89% Statements, ~76% Branches, 100% Functions.*
 
 - **Linting**:
   ```bash
