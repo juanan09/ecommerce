@@ -11,7 +11,9 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "typecheck": "tsc --noEmit",
+    "prepare": "husky"
   },
   "dependencies": {
     "@sentry/react": "^10.38.0",
@@ -37,6 +39,7 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "eslint-plugin-sonarjs": "^3.0.6",
     "globals": "^16.5.0",
+    "husky": "^9.1.7",
     "jsdom": "^27.4.0",
     "tailwindcss": "^4.1.18",
     "typescript": "~5.9.3",

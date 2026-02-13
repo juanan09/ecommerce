@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { ProductCatalog } from './features/product-catalog/components/ProductCatalog';
 import { ShoppingCart } from './features/shopping-cart/ShoppingCart';
 import { LoginDemo } from './features/auth/LoginDemo';
-import { CartProvider } from './context/CartContext';
+
 import { useCart } from './context/useCart';
-import { ToastProvider, useToast } from './context/ToastContext';
+import { useToast } from './context/ToastContext';
 import type { Product } from '@/shared/types';
 
 const MainLayout = () => {
@@ -66,6 +66,16 @@ const MainLayout = () => {
           </div>
 
           <div className="flex items-center gap-6">
+            {import.meta.env.DEV && (
+              <button
+                onClick={() => {
+                  throw new Error('Test error from React')
+                }}
+                className="bg-red-500 text-white px-2 py-1 text-sm rounded hover:bg-red-600 transition-colors"
+              >
+                Test Error
+              </button>
+            )}
             <button
               onClick={() => setIsLoginOpen(true)}
               className="text-sm font-medium text-gray-600 hover:text-blue-600 px-3 py-2 rounded-md hover:bg-blue-50 transition-all flex items-center gap-2"
@@ -111,13 +121,7 @@ const MainLayout = () => {
 };
 
 function App() {
-  return (
-    <ToastProvider>
-      <CartProvider>
-        <MainLayout />
-      </CartProvider>
-    </ToastProvider>
-  );
+  return <MainLayout />;
 }
 
 export default App;

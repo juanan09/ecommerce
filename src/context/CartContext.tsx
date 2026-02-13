@@ -1,4 +1,5 @@
 import { useReducer, useEffect, useRef, useMemo, type ReactNode } from 'react';
+import * as Sentry from '@sentry/react';
 import type { Product } from '@/shared/types';
 import { BulkDiscountStrategy, OrderDiscountStrategy, DiscountCalculator } from '@/shared/strategies';
 import { cartReducer, type CartState } from './cartReducer';
@@ -54,11 +55,42 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }, [state.items, subtotal]);
 
     // Actions
-    const addItem = (product: Product) => dispatch({ type: 'ADD_ITEM', payload: product });
-    const removeItem = (id: string) => dispatch({ type: 'REMOVE_ITEM', payload: { id } });
-    const updateQuantity = (id: string, quantity: number) =>
+    const addItem = (product: Product) => {
+        dispatch({ type: 'ADD_ITEM', payload: product });
+        Sentry.addBreadcrumb({
+            category: 'cart',
+            message: `Added ${product.name} to cart`,
+            level: 'info',
+            data: {
+                productId: product.id,
+                productName: product.name,
+                price: product.price
+            }
+        });
+    }
+
+    const removeItem = (id: string) => {
+        dispatch({ type: 'REMOVE_ITEM', payload: { id } });
+        Sentry.addBreadcrumb({
+            category: 'cart',
+            message: `Removed item ${id} from cart`,
+            level: 'info',
+            data: { productId: id }
+        });
+    }
+
+    const updateQuantity = (id: string, quantity: number) => {
         dispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
-    const clearCart = () => dispatch({ type: 'CLEAR_CART' });
+    }
+
+    const clearCart = () => {
+        dispatch({ type: 'CLEAR_CART' });
+        Sentry.addBreadcrumb({
+            category: 'cart',
+            message: 'Cleared cart',
+            level: 'info',
+        });
+    }
 
     const value = useMemo(
         () => ({

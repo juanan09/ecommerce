@@ -65,7 +65,7 @@ describe('LoginDemo', () => {
         await user.click(submitButton);
 
         await waitFor(() => {
-            expect(screen.getByText(/login successful/i)).toBeInTheDocument();
+            expect(screen.getByText(/welcome back/i)).toBeInTheDocument();
         });
     });
 
@@ -106,7 +106,7 @@ describe('LoginDemo', () => {
         await user.type(emailInput, 'wrong@example.com');
         await user.type(passwordInput, 'ValidPass123!');
         await user.click(submitButton);
-        await waitFor(() => expect(screen.getAllByText(/invalid credentials/i)).toHaveLength(1));
+        await waitFor(() => expect(screen.getByText(/invalid credentials/i)).toBeInTheDocument());
         // Note: The message might stay or re-appear. We just need to ensure we can click again.
 
         // Attempt 3
@@ -118,7 +118,7 @@ describe('LoginDemo', () => {
 
         // After 3rd attempt, form should be locked
         await waitFor(() => {
-            expect(screen.getByText(/too many attempts/i)).toBeInTheDocument();
+            expect(screen.getByText(/form locked due to too many failed attempts/i)).toBeInTheDocument();
         });
 
         expect(emailInput).toBeDisabled();

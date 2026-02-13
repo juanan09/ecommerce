@@ -1,10 +1,16 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { initSentry } from './infrastructure/sentry'
+import { AppProviders } from './providers/AppProviders'
+import App from './App'
 import './index.css'
-import App from './App.tsx'
+
+initSentry()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <AppProviders>
+      <App />
+    </AppProviders>
   </StrictMode>,
 )

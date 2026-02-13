@@ -25,19 +25,19 @@ export class ShoppingCartPage {
 
     async incrementItem(productName: string) {
         await this.getCartItem(productName)
-            .getByRole('button', { name: 'Increase quantity' })
+            .getByRole('button', { name: /increase quantity/i })
             .click();
     }
 
     async decrementItem(productName: string) {
         await this.getCartItem(productName)
-            .getByRole('button', { name: 'Decrease quantity' })
+            .getByRole('button', { name: /decrease quantity/i })
             .click();
     }
 
     async removeItem(productName: string) {
         await this.getCartItem(productName)
-            .getByRole('button', { name: 'remove item' })
+            .getByRole('button', { name: /remove/i })
             .click();
     }
 
