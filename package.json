@@ -6,13 +6,16 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
     "preview": "vite preview",
-    "test": "vitest",
-    "test:run": "vitest run",
-    "test:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest --run",
+    "test:coverage": "vitest --coverage",
+    "test:e2e": "playwright test",
+    "quality": "npm run lint && npm run typecheck && npm run test:run",
+    "verify": "npm run quality && npm run test:e2e && npm run build",
     "prepare": "husky"
   },
   "dependencies": {

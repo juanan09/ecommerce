@@ -14,11 +14,15 @@ export class BulkDiscountStrategy implements DiscountStrategy {
         return BUSINESS_RULES.DISCOUNTS.BULK.PERCENTAGE;
     }
 
-    public isApplicable(items: CartItem[]): boolean {
+    public isApplicable(items: CartItem[], _subtotal: number): boolean {
+        // Bulk discount applies if any item has quantity >= minItems
+        // subtotal is unused for this strategy
         return items.some((item) => item.quantity >= this.minItems);
     }
 
-    public calculate(items: CartItem[]): number {
+    public calculate(items: CartItem[], _subtotal: number): number {
+        // Calculate discount for each eligible item
+        // subtotal is unused for this strategy
         return items.reduce((totalDiscount, item) => {
             if (item.quantity >= this.minItems) {
                 const itemSubtotal = item.product.price * item.quantity;

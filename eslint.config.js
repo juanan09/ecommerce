@@ -33,6 +33,11 @@ export default defineConfig([
       'sonarjs/no-duplicate-string': ['error', { threshold: 3 }],
       'sonarjs/no-identical-functions': 'error',
       'sonarjs/no-nested-conditional': 'warn',
+      '@typescript-eslint/no-unused-vars': ['error', {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_'
+      }],
     },
   },
   // Relaxed rules for test files
