@@ -19,10 +19,26 @@ export default defineConfig({
     }),
     tailwindcss(),
   ],
-  test: {
-    environment: 'jsdom',
-    setupFiles: './src/setupTests.ts',
-    globals: true,
-    exclude: ['e2e/*', '**/node_modules/**'],
+  environment: 'jsdom',
+  setupFiles: './src/setupTests.ts',
+  globals: true,
+  exclude: ['e2e/*', '**/node_modules/**'],
+  coverage: {
+    provider: 'v8',
+    reporter: ['text', 'html'],
+    thresholds: {
+      statements: 80,
+      branches: 80,
+      functions: 80,
+      lines: 80,
+    },
+    include: ['src/**/*.{ts,tsx}'],
+    exclude: [
+      'src/**/*.test.{ts,tsx}',
+      'src/**/*.stories.{ts,tsx}',
+      'src/test/**',
+      'src/main.tsx',
+      'src/vite-env.d.ts',
+    ],
   },
-})
+});
